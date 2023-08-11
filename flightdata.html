@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flights Information</title>
+</head>
+
+<body>
+
+    <!-- Arrivals Table -->
+    <h2>Arrivals</h2>
+    <table id="arrivalsTable" border="1">
+        <thead>
+            <tr>
+                <th>LandedDate</th>
+                <th>LandedTime</th>
+                <th>FLIGHT</th>
+                <th>FROM</th>
+                <th>AIRLINE</th>
+                <th>AIRCRAFT</th>
+                <th>STATUS</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Data rows for arrivals will go here -->
+        </tbody>
+    </table>
+
+    <!-- Departures Table -->
+    <h2>Departures</h2>
+    <table id="departuresTable" border="1">
+        <thead>
+            <tr>
+                <th>DepartureDate</th>
+                <th>DepartureTime</th>
+                <th>FLIGHT</th>
+                <th>TO</th>
+                <th>AIRLINE</th>
+                <th>AIRCRAFT</th>
+                <th>STATUS</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Data rows for departures will go here -->
+        </tbody>
+    </table>
+
+    <script>
+        // Fetch and display arrivals data
+        fetch('flights_data_2023_08_11.json')
+            .then(response => response.json())
+            .then(data => {
+                data.forEach(flightData => {
+                    const LandedDate = new Date(flightData.lastSeen * 1000).toLocaleDateString();
+                    const LandedTime = new Date(flightData.lastSeen * 1000).toLocaleTimeString();
+                    const tableBody = document.querySelector("#arrivalsTable tbody");
+                    const newRow = tableBody.insertRow();
+                    newRow.insertCell().textContent = LandedDate;
+                    newRow.insertCell().textContent = LandedTime;
+                    newRow.insertCell().textContent = flightData.callsign.trim();
+                    newRow.insertCell().textContent = flightData.estDepartureAirport;
+                    newRow.insertCell().textContent = "Unknown";  // AIRLINE placeholder
+                    newRow.insertCell().textContent = "Unknown";  // AIRCRAFT placeholder
+                    newRow.insertCell().textContent = "Landed " + LandedTime;
+                });
+            });
+
+        // Fetch and display departures data
+        fetch('flights_departure_data_d_2023_08_11.json') 
+            .then(response => response.json())
+            .then(data => {
+                data.forEach(flightData => {
+                    const DepartureDate = new Date(flightData.firstSeen * 1000).toLocaleDateString();
+                    const DepartureTime = new Date(flightData.firstSeen * 1000).toLocaleTimeString();
+                    const tableBody = document.querySelector("#departuresTable tbody");
+                    const newRow = tableBody.insertRow();
+                    newRow.insertCell().textContent = DepartureDate;
+                    newRow.insertCell().textContent = DepartureTime;
+                    newRow.insertCell().textContent = flightData.callsign.trim();
+                    newRow.insertCell().textContent = flightData.estArrivalAirport ? flightData.estArrivalAirport : "Unknown"; 
+                    newRow.insertCell().textContent = "Unknown";  // AIRLINE placeholder
+                    newRow.insertCell().textContent = "Unknown";  // AIRCRAFT placeholder
+                    newRow.insertCell().textContent = "Departed " + DepartureTime;
+                });
+            });
+    </script>
+
+</body>
+</html>
