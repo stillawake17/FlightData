@@ -45,12 +45,11 @@ def save_to_daily_file(data):
 
 # Calculate timestamps dynamically
 current_time = int(time.time())
-end_time = current_time
-start_time = end_time - 86400
+end_time = current_time - 86400   # This will make it yesterday
+start_time = end_time - (5 * 86400)  # This will go back 5 days from yesterday
 
 flights_data = get_flights_data(AIRPORT_ICAO, start_time, end_time)
 save_to_daily_file(flights_data)
-
 
 print(f"Start time: {datetime.datetime.utcfromtimestamp(start_time).strftime('%Y-%m-%d %H:%M:%S')}")
 print(f"End time: {datetime.datetime.utcfromtimestamp(end_time).strftime('%Y-%m-%d %H:%M:%S')}")
