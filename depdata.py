@@ -3,9 +3,12 @@ import json
 import time
 import datetime
 
-# Authentication credentials
-USERNAME = "jo.stillawake"
-PASSWORD = "Uk9w7uPP!H@4TVC"
+with open("config.json", "r") as file:
+    config = json.load(file)
+
+USERNAME = config["USERNAME"]
+PASSWORD = config["PASSWORD"]
+
 
 # URL and Parameters
 BASE_URL = "https://opensky-network.org/api/flights"
