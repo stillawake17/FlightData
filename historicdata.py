@@ -8,6 +8,7 @@ def get_json_files_in_directory():
     # Get a list of all files in the current directory with a .json extension
     return [file for file in os.listdir() if file.endswith('.json')]
 
+print("Current Working Directory:", os.getcwd())
 
 with open("config.json", "r") as file:
     config = json.load(file)
@@ -53,8 +54,9 @@ def save_to_daily_file(data):
         json.dump(combined_data, file)
 
 # Calculate timestamps dynamically
+# OpenSky api lets you extract data from the past within certain time intervals
 current_time = int(time.time())
-end_time = current_time - (38 * 86400)   # This will make five days ago
+end_time = current_time - (96 * 86400)   # This will make it five days ago
 start_time = end_time - (6 * 86400)  # This will go back 6 days from five days ago
 
 flights_data = get_flights_data(AIRPORT_ICAO, start_time, end_time)
